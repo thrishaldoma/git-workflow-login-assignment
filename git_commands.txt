@@ -1,0 +1,136 @@
+GIT COMMAND DOCUMENTATION
+
+Commands in execution order. Repeated commands are retained to show the workflow.
+Run project commands from the git-workflow-login-assignment folder.
+HTML files and documentation were created/edited between the relevant Git steps.
+
+Preparation (before repository creation):
+
+git config --get user.name
+  Inspect the existing default author name.
+
+git config --get user.email
+  Inspect the default author email; use a repository-local no-reply email below.
+
+Local workflow:
+
+git init -b main
+  Initialize the local repository with main as the initial branch, before creating a GitHub repository.
+
+git config --local user.name 'Thrishal Doma'
+  Set the commit author name for this repository only.
+
+git config --local user.email 312891306+thrishaldoma@users.noreply.github.com
+  Use the GitHub account’s no-reply email for commits in this public repository.
+
+git add index.html about.html
+  Stage the two initial HTML files.
+
+git commit -m 'Initial commit: add home and about pages'
+  Record the initial project state as the first commit.
+
+git add index.html
+  Stage the updated home page.
+
+git commit -m 'Update home page with workflow overview'
+  Create the second commit after modifying index.html.
+
+git branch feature
+  Create a branch named feature from the second commit.
+
+git switch feature
+  Switch to the feature branch before making feature changes.
+
+git add about.html
+  Stage the change made on the feature branch.
+
+git commit -m 'Add feature section to about page'
+  Commit the new about-page section on feature.
+
+git switch main
+  Return to the main branch.
+
+git merge --no-ff feature -m 'Merge feature branch into main'
+  Merge feature into main with an explicit merge commit so branch activity stays visible.
+
+git log --oneline --graph --decorate --all
+  Display all commits and the feature branch merge in a graph.
+
+git add .gitignore
+  Stage rules that ignore all .log files and folders named temp.
+
+git commit -m 'Add ignore rules for log files and temp folder'
+  Commit the .gitignore implementation.
+
+git check-ignore -v debug.log temp/scratch.txt
+  Show the exact ignore rule matching each demonstration file.
+
+git status --short --ignored
+  Show ignored files with !!; they are excluded from tracked project files.
+
+git add index.html
+  Stage a temporary change for the undo exercise.
+
+git commit -m 'Add temporary note for undo demonstration'
+  Create the additional commit that will be undone next.
+
+git show --format=short HEAD -- index.html
+  Show the temporary paragraph added by the last commit.
+
+git revert --no-edit HEAD
+  Undo the last commit by adding an inverse commit, preserving both actions in history.
+
+git show --format=short HEAD -- index.html
+  Show the revert removing the temporary paragraph.
+
+git diff --exit-code 'HEAD~2' HEAD -- index.html
+  Verify index.html exactly matches its state before the temporary commit; empty output and exit code 0 mean it matches.
+
+git status --short
+  Verify there are no tracked or untracked changes after the revert; ignored demonstration files stay excluded.
+
+git log --oneline --graph --decorate --all
+  Display the complete workflow history, including the temporary commit and its revert.
+
+Documentation and GitHub integration:
+
+git add README.md login_test_cases.md git_commands.txt workflow_evidence.txt
+  Stage the assignment documentation, test cases, and captured workflow evidence.
+
+git commit -m 'Add assignment documentation and login test cases'
+  Commit all submission documents after the undo demonstration.
+
+gh repo create thrishaldoma/git-workflow-login-assignment --public --description "Git workflow demonstration and login system test case assignment"
+  GitHub CLI: create an empty PUBLIC remote repository only after completing the local workflow.
+
+git remote add origin https://github.com/thrishaldoma/git-workflow-login-assignment.git
+  Connect this existing local repository to the newly created GitHub repository.
+
+git push -u origin main feature
+  Push both branches and their complete reachable history; set upstream tracking for each branch.
+
+git remote -v
+  Display the configured origin fetch and push URLs.
+
+git ls-remote --heads origin
+  Verify main and feature both exist on GitHub and inspect their commit hashes.
+
+git log --oneline --graph --decorate --all
+  Display final history including the documentation commit and remote-tracking branches.
+
+git status --short
+  Confirm the final working tree is clean; an empty result means there are no pending changes.
+
+gh repo view thrishaldoma/git-workflow-login-assignment --json url,visibility,defaultBranchRef
+  GitHub CLI: verify the repository URL, PUBLIC visibility, and main default branch.
+
+git archive --format=zip --output=/Users/thrishaldoma/git-workflow-login-assignment-submission.zip main
+  Export tracked submission files to a ZIP; Git history remains in the local .git directory and on GitHub.
+
+Additional environment checks (GitHub CLI, not Git commands):
+
+gh auth status
+  Check which GitHub account is authenticated.
+
+gh api user --jq '{login: .login, id: .id}'
+  Confirm the account login and numeric ID for the public no-reply commit email.

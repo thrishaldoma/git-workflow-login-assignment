@@ -1,0 +1,140 @@
+QUESTION 1 — CAPTURED LOCAL WORKFLOW OUTPUT
+
+Every command below completed successfully (exit code 0).
+This snapshot ends before the documentation commit and GitHub publishing.
+
+$ git init -b main
+Initialized empty Git repository in /Users/thrishaldoma/git-workflow-login-assignment/.git/
+
+$ git config --local user.name 'Thrishal Doma'
+(no output)
+
+$ git config --local user.email 312891306+thrishaldoma@users.noreply.github.com
+(no output)
+
+$ git add index.html about.html
+(no output)
+
+$ git commit -m 'Initial commit: add home and about pages'
+[main (root-commit) 3fae70e] Initial commit: add home and about pages
+ 2 files changed, 26 insertions(+)
+ create mode 100644 about.html
+ create mode 100644 index.html
+
+$ git add index.html
+(no output)
+
+$ git commit -m 'Update home page with workflow overview'
+[main 9b3eef9] Update home page with workflow overview
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+$ git branch feature
+(no output)
+
+$ git switch feature
+Switched to branch 'feature'
+
+$ git add about.html
+(no output)
+
+$ git commit -m 'Add feature section to about page'
+[feature a690868] Add feature section to about page
+ 1 file changed, 2 insertions(+)
+
+$ git switch main
+Switched to branch 'main'
+
+$ git merge --no-ff feature -m 'Merge feature branch into main'
+Merge made by the 'ort' strategy.
+ about.html | 2 ++
+ 1 file changed, 2 insertions(+)
+
+$ git log --oneline --graph --decorate --all
+*   16fbd7c (HEAD -> main) Merge feature branch into main
+|\  
+| * a690868 (feature) Add feature section to about page
+|/  
+* 9b3eef9 Update home page with workflow overview
+* 3fae70e Initial commit: add home and about pages
+
+$ git add .gitignore
+(no output)
+
+$ git commit -m 'Add ignore rules for log files and temp folder'
+[main 4f5dbd2] Add ignore rules for log files and temp folder
+ 1 file changed, 2 insertions(+)
+ create mode 100644 .gitignore
+
+$ git check-ignore -v debug.log temp/scratch.txt
+.gitignore:1:*.log	debug.log
+.gitignore:2:temp/	temp/scratch.txt
+
+$ git status --short --ignored
+!! debug.log
+!! temp/
+
+$ git add index.html
+(no output)
+
+$ git commit -m 'Add temporary note for undo demonstration'
+[main 84b3991] Add temporary note for undo demonstration
+ 1 file changed, 1 insertion(+)
+
+$ git show --format=short HEAD -- index.html
+commit 84b3991f81cb4d15afbd2b6d9c32cd29903c2226
+Author: Thrishal Doma <312891306+thrishaldoma@users.noreply.github.com>
+
+    Add temporary note for undo demonstration
+
+diff --git a/index.html b/index.html
+index 41c6a6a..da4e641 100644
+--- a/index.html
++++ b/index.html
+@@ -9,5 +9,6 @@
+   <h1>Git Workflow Assignment</h1>
+   <nav><a href="index.html">Home</a> | <a href="about.html">About</a></nav>
+   <p>This project demonstrates commits, branching, merging, and undo operations with Git.</p>
++  <p id="temporary-note">Temporary note for the undo demonstration.</p>
+ </body>
+ </html>
+
+$ git revert --no-edit HEAD
+[main 6a04f78] Revert "Add temporary note for undo demonstration"
+ Date: Sun Nov 15 21:33:35 2026 +0530
+ 1 file changed, 1 deletion(-)
+
+$ git show --format=short HEAD -- index.html
+commit 6a04f78d71bfb6bafca48b768c0b9fe57f9b1e61
+Author: Thrishal Doma <312891306+thrishaldoma@users.noreply.github.com>
+
+    Revert "Add temporary note for undo demonstration"
+
+diff --git a/index.html b/index.html
+index da4e641..41c6a6a 100644
+--- a/index.html
++++ b/index.html
+@@ -9,6 +9,5 @@
+   <h1>Git Workflow Assignment</h1>
+   <nav><a href="index.html">Home</a> | <a href="about.html">About</a></nav>
+   <p>This project demonstrates commits, branching, merging, and undo operations with Git.</p>
+-  <p id="temporary-note">Temporary note for the undo demonstration.</p>
+ </body>
+ </html>
+
+$ git diff --exit-code 'HEAD~2' HEAD -- index.html
+(no output)
+
+$ git status --short
+(no output)
+
+$ git log --oneline --graph --decorate --all
+* 6a04f78 (HEAD -> main) Revert "Add temporary note for undo demonstration"
+* 84b3991 Add temporary note for undo demonstration
+* 4f5dbd2 Add ignore rules for log files and temp folder
+*   16fbd7c Merge feature branch into main
+|\  
+| * a690868 (feature) Add feature section to about page
+|/  
+* 9b3eef9 Update home page with workflow overview
+* 3fae70e Initial commit: add home and about pages
+
